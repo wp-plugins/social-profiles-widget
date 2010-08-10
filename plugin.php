@@ -3,7 +3,7 @@
 Plugin Name: Social Profiles Widget
 Plugin URI: http://www.studiopress.com/plugins/social-profiles-widget
 Description: This plugin/widget allows you to insert social profile icons into your sidebar via a widget.
-Version: 1.1
+Version: 1.1.1
 Author: Nathan Rice
 Author URI: http://www.nathanrice.net/
 
@@ -117,7 +117,7 @@ class Social_Profiles_Widget extends WP_Widget {
 				
 			foreach ( $this->spw_fields_array( $instance ) as $key => $data ) {
 				if ( !empty ( $instance[$key] ) ) {
-					printf( '<a href="%s"><img src="%s" title="%s" /></a>', esc_url( $instance[$key] ), esc_url( $data['img'] ), esc_attr( $data['img_title'] ) );
+					printf( '<a href="%s"><img src="%s" alt="%s" /></a>', esc_url( $instance[$key] ), esc_url( $data['img'] ), esc_attr( $data['img_title'] ) );
 				}
 			}
 		
