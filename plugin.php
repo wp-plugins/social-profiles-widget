@@ -3,7 +3,7 @@
 Plugin Name: Social Profiles Widget
 Plugin URI: http://www.studiopress.com/plugins/social-profiles-widget
 Description: This plugin/widget allows you to insert social profile icons into your sidebar via a widget.
-Version: 1.1.1
+Version: 1.2
 Author: Nathan Rice
 Author URI: http://www.nathanrice.net/
 
@@ -29,13 +29,13 @@ class Social_Profiles_Widget extends WP_Widget {
 		$widget_ops = array( 'classname' => 'social-profiles', 'description' => __('Displays Social Profile links as icons', 'spw') );
 		$this->WP_Widget( 'socialprofiles', __('Social Profiles', 'spw'), $widget_ops );
 	}
-	
+
 	var $plugin_imgs_url;
-	
+
 	function spw_fields_array( $instance = array() ) {
-		
+
 		$this->plugins_imgs_url = plugin_dir_url(__FILE__) . 'images/';
-		
+
 		return array(
 			'feedburner' => array(
 				'title' => __('RSS/Feedburner URL', 'spw'),
@@ -101,48 +101,48 @@ class Social_Profiles_Widget extends WP_Widget {
 	}
 
 	function widget($args, $instance) {
-		
+
 		extract($args);
-		
+
 		$instance = wp_parse_args($instance, array(
 			'title' => '',
 			'icon_set' => 'default',
-			'size' => '48x48'
+			'size' => '24x24'
 		) );
-		
+
 		echo $before_widget;
-		
+
 			if ( !empty( $instance['title'] ) )
 				echo $before_title . $instance['title'] . $after_title;
-				
+
 			foreach ( $this->spw_fields_array( $instance ) as $key => $data ) {
 				if ( !empty ( $instance[$key] ) ) {
 					printf( '<a href="%s"><img src="%s" alt="%s" /></a>', esc_url( $instance[$key] ), esc_url( $data['img'] ), esc_attr( $data['img_title'] ) );
 				}
 			}
-		
+
 		echo $after_widget;
-		
+
 	}
 
 	function update($new_instance, $old_instance) {
 		return $new_instance;
 	}
 
-	function form($instance) { 
+	function form($instance) {
 
 		$instance = wp_parse_args($instance, array(
 			'title' => '',
 			'icon_set' => 'default',
-			'size' => '48x48'
+			'size' => '24x24'
 		) );
 ?>
-		
+
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title', 'spw'); ?>:</label><br />
 			<input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo $instance['title']; ?>" style="width:95%;" />
 		</p>
-		
+
 		<p>
 			<label for="<?php echo $this->get_field_id('icon_set'); ?>"><?php _e('Icon Set', 'spw'); ?>:</label>
 			<select id="<?php echo $this->get_field_id('icon_set'); ?>" name="<?php echo $this->get_field_name('icon_set'); ?>">
@@ -153,17 +153,18 @@ class Social_Profiles_Widget extends WP_Widget {
 				<option style="padding-right:10px;" value="sketch" <?php selected('sketch', $instance['icon_set']); ?>><?php _e('Sketch', 'spw'); ?></option>
 			</select>
 		</p>
-		
+
 		<p>
 			<label for="<?php echo $this->get_field_id('size'); ?>"><?php _e('Icon Size', 'spw'); ?>:</label>
 			<select id="<?php echo $this->get_field_id('size'); ?>" name="<?php echo $this->get_field_name('size'); ?>">
+				<option style="padding-right:10px;" value="24x24" <?php selected('24x24', $instance['size']); ?>><?php _e('Mini', 'spw'); ?> (24px)</option>
 				<option style="padding-right:10px;" value="32x32" <?php selected('32x32', $instance['size']); ?>><?php _e('Small', 'spw'); ?> (32px)</option>
 				<option style="padding-right:10px;" value="48x48" <?php selected('48x48', $instance['size']); ?>><?php _e('Large', 'spw'); ?> (48px)</option>
 			</select>
 		</p>
-		
+
 		<p><?php _e('Enter the URL(s) for your various social profiles below. If you leave a profile URL field blank, it will not be used.', 'spw'); ?></p>
-		
+
 <?php
 
 		foreach ( $this->spw_fields_array( $instance ) as $key => $data ) {
