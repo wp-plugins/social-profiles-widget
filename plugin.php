@@ -1,14 +1,18 @@
 <?php
 /*
-Plugin Name: Social Profiles Widget
-Plugin URI: http://www.studiopress.com/plugins/social-profiles-widget
-Description: This plugin/widget allows you to insert social profile icons into your sidebar via a widget.
-Version: 1.2
-Author: Nathan Rice
-Author URI: http://www.nathanrice.net/
+	Plugin Name: Social Profiles Widget
+	Plugin URI: http://www.studiopress.com/plugins/social-profiles-widget
+	Description: This plugin/widget allows you to insert social profile icons into your sidebar via a widget.
+	Author: Nathan Rice
+	Author URI: http://www.nathanrice.net/
 
-This plugin is released under the GPLv2 license. The images packaged with this plugin are the property of
-their respective owners, and do not, necessarily, inherit the GPLv2 license.
+	Version: 1.2.1
+
+	License: GNU General Public License v2.0
+	License URI: http://www.opensource.org/licenses/gpl-license.php
+
+	NOTE: This plugin is released under the GPLv2 license. The images packaged with this plugin are the property
+	of their respective owners, and do not, necessarily, inherit the GPLv2 license.
 */
 
 /**
@@ -106,18 +110,21 @@ class Social_Profiles_Widget extends WP_Widget {
 
 		$instance = wp_parse_args($instance, array(
 			'title' => '',
+			'new_window' => 0,
 			'icon_set' => 'default',
 			'size' => '24x24'
 		) );
 
 		echo $before_widget;
 
-			if ( !empty( $instance['title'] ) )
+			if ( ! empty( $instance['title'] ) )
 				echo $before_title . $instance['title'] . $after_title;
+				
+			$new_window = $instance['new_window'] ? 'target="_blank"' : '';
 
 			foreach ( $this->spw_fields_array( $instance ) as $key => $data ) {
-				if ( !empty ( $instance[$key] ) ) {
-					printf( '<a href="%s"><img src="%s" alt="%s" /></a>', esc_url( $instance[$key] ), esc_url( $data['img'] ), esc_attr( $data['img_title'] ) );
+				if ( ! empty ( $instance[$key] ) ) {
+					printf( '<a href="%s" %s><img src="%s" alt="%s" /></a>', esc_url( $instance[$key] ), $new_window, esc_url( $data['img'] ), esc_attr( $data['img_title'] ) );
 				}
 			}
 
@@ -133,6 +140,7 @@ class Social_Profiles_Widget extends WP_Widget {
 
 		$instance = wp_parse_args($instance, array(
 			'title' => '',
+			'new_window' => 0,
 			'icon_set' => 'default',
 			'size' => '24x24'
 		) );
@@ -142,6 +150,8 @@ class Social_Profiles_Widget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title', 'spw'); ?>:</label><br />
 			<input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php echo $instance['title']; ?>" style="width:95%;" />
 		</p>
+		
+		<p><label><input id="<?php echo $this->get_field_id( 'new_window' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'new_window' ); ?>" value="1" <?php checked( 1, $instance['new_window'] ); ?>/> <?php esc_html_e( 'Open links in new window?', 'spw' ); ?></label></p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id('icon_set'); ?>"><?php _e('Icon Set', 'spw'); ?>:</label>
